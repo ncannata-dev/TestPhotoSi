@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, memo, Suspense } from "react";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import PageHome from "./pages/PageHome";
+import { store } from "./redux-modules/store";
+
+import "./App.css";
+
+const PageDetail = lazy(() => import("./pages/PageDetail"));
+
+const App = memo(
+  (): JSX.Element => (
+    <Provider store={store}>
+      <Router>
+        <Suspense>
+          <Routes>
+            <Route path="/" element={<PageHome />} />
+            <Route path="/detail/:id" element={<PageDetail />} />
+          </Routes>
+        </Suspense>
+      </Router>
+    </Provider>
+  )
+);
 
 export default App;
